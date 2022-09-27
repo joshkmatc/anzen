@@ -13,7 +13,7 @@ mkdir -p /home/$mainUser/Desktop/.backups
 # User Management
 readarray -t users < <(getent passwd | cut -d: -f1 | sort)
 uslen=${#users[@]}
-
+echo "### Existing User Changed Passwords ###" >> /home/$mainUser/Desktop/.backups/passwords.txt
 for (( i=0;i<$uslen;i++)) 
 do
 	echo "[INFO] Ignore user ${users[${i}]}? (Do this if it is a system user) (y/n)"
@@ -55,10 +55,12 @@ do
 					echo "Password:"
 					read pass
 					echo -e "$pass\n$pass" | passwd ${users[${i}]}
+					echo "USER: ${users[${i}]} PASS: $pass" >> /home/$mainUser/Desktop/.backups/passwords.txt
 					echo "[INFO] The password for ${users[${i}]} has been changed. [CUSTOM]"
 				else
 					pass="3af32ag45g!!9%"
 					echo -e "$pass\n$pass" | passwd ${users[${i}]}
+					echo "USER: ${users[${i}]} PASS: $pass" >> /home/$mainUser/Desktop/.backups/passwords.txt
 					echo "[INFO] The password for ${users[${i}]} has been changed to $pass"
 				fi
 			fi
@@ -77,6 +79,7 @@ do
 done	
 
 # New User Management
+echo "### New User Passwords" >> /home/$mainUser/Desktop/.backups/passwords.txt
 clear
 echo "[INFO] Type any new user account names below. Separate names using spaces."
 read -a newUsers
@@ -99,6 +102,21 @@ do
 	else
 		echo "[INFO] ${newUsers[${i}]} is now a standard user."
 	fi
+	echo "[INFO] Add custom password for ${newUsers[${i}]}? (y/n)"
+        	read cpass
+                if [ $cpass == y ]
+                then
+                	echo "Password:"
+                	read pass
+                        echo -e "$pass\n$pass" | passwd ${newUsers[${i}]}
+			echo "USER: ${newUsers[${i}]} PASS: $pass" >> /home/$mainUser/Desktop/.backups/passwords.txt
+                        echo "[INFO] The password for ${newUsers[${i}]} has been changed. [CUSTOM]"
+                else
+                        pass="3af32ag45g!!9%"
+                        echo -e "$pass\n$pass" | passwd ${newUsers[${i}]}
+			echo "USER: ${newUsers[${i}]} PASS: $pass" >> /home/$mainUser/Desktop/.backups/passwords.txt
+                        echo "[INFO] The password for ${newUsers[${i}]} has been changed to $pass"
+                fi
 	passwd -x30 -n3 -w7 ${newUsers[${i}]}
         echo "[INFO] ${newUsers[${i}]}'s password ages have been set. MAX: 30D MIN: 3D WARN: 7D"
         echo "[INFO] Lock ${newUsers[${i}]}'s account? (y/n)"
@@ -142,7 +160,7 @@ echo -e "#Configuration for the irqbalance daemon\n\n#Should irqbalance be enabl
 clear 
 echo "[INFO] Type the name of critical services need out of this list along with a Y or N (case sensitive). Separate them by spaces."
 echo "[INFO] Example: sambaY ftpN sshY telnetY mailN"
-echo "[SEL] samba ftp ssh telnet mail print mysql webserver dns mediafiles ipv6"
+echo "[SEL] samba ftp ssh telnet mail print mysql webserver dns ipv6"
 read -a services
 servicesLen=${#services[@]}
 
@@ -158,14 +176,47 @@ do
 		cp /etc/samba/smb.conf /home/$mainUser/Desktop/.backups/
 		if [ "$(grep '####### Authentication #######' /etc/samba/smb.conf)" == 0 ]
 		then
-			sed -i 
+			sed -i 's/####### Authentication #######/####### Authentication #######\nsecurity = user/g' /etc/samba/smb.conf	
 		fi
+		sed -i 's/usershare allow guests = no/usershare allow guests = yes/g' /etc/samba/smb.conf
+		echo "### SAMBA PASSWORDS ###" >> /home/$mainUser/Desktop/.backups/passwords.txt
+		for (( i=0;i<$uslen;i++)) 
+		do
+			clear
+			echo "[INFO] Give ${users[${i}]} Samba permissions? (y/n)"
+			read sambaPerm
+			if [ $sambaPerm == y ] 
+			then
+				echo "[INFO] Type in a custom password for ${users[${i}]} or type n for no password."
+				read cPassS
+				if [ $cPassS == n ] 
+				then
+					pass="43q0g43qgn!!"
+					echo -e "43q0g43qgn!!\43q0g43qgn!!" | smbpasswd -a ${users[${i}]}
+					echo "USER: ${users[${i}]} PASS: 43q0g43qgn!!" >> /home/$mainUser/Desktop/.backups/passwords.txt
+				else
+					echo -e "$cPassS" | smbpasswd -a ${users[${i}]}
+					echo "USER: ${users[${i}]} PASS: $cPassS" >> /home/$mainUser/Desktop/.backups/passwords.txt
+				fi
+			fi
+		done
+		echo "[INFO] Samba has been enabled."
 	elif [ ${services[${i}]} == "sambaN" ]
 	then
-	
+		ufw deny netbios-ns
+		ufw deny netbios-dgm
+		ufw deny netbios-ssn
+		ufw deny microsoft-ds
+		apt-get purge samba samba-common samba-common-bin samba4 -y -qq
+		echo "[INFO] Samba has been removed from the system."	
 	elif [ ${services[${i}]} == "ftpY" ]
 	then
-
+		ufw allow ftp
+		ufw allow sftp
+		ufw allow saft
+		ufw allow ftps-data
+		ufw allow ftps
+		systemctl restart pureftpd
 	elif [ ${services[${i}]} == "ftpN" ]
 	then
 
@@ -205,12 +256,6 @@ do
 	elif [ ${services[${i}]} == "dnsN" ]
         then
 
-	elif [ ${services[${i}]} == "mediafilesY" ]
-        then
-
-	elif [ ${services[${i}]} == "mediafilesN" ]
-        then
-
 	elif [ ${services[${i}]} == "ipv6Y" ]
         then
 
@@ -220,6 +265,9 @@ do
 	fi
 done
 
+echo "Script has completed."
+echo "Files have been backed up to /home/$mainUser/Desktop/.backups"
+echo "Be sure to check this directory, as it contains passwords, backed up files, and more."
 echo "This is what has been done on your system:"
 echo "- User Management"
 echo "- New User Management"
@@ -231,4 +279,13 @@ echo "	- /etc/shadow permissions set to 604"
 echo "	- Startup apps have been disabled (backed up)"
 echo "	- UFW (firewall) has been enabled with port 1337 disabled"
 echo "	- /etc/hosts has been reset (backed up)"
-
+echo "- Samba has been enabled/disabled"
+echo "- FTP has been enabled/disabled"
+echo "- Telnet has been enabled/disabled"
+echo "- Mail Server has been enabled/disabled"
+echo "- Printing Service has been enabled/disabled"
+echo "- MySQL has been enabled/disabled"
+echo "- Web Server has been enabled/disabled"
+echo "- DNS server has been enabled/disabled"
+echo "- Media files have been listed in prohibited-files.txt file."
+echo "- IPv6 has been enabled/disabled"
