@@ -150,11 +150,73 @@ for (( i=0;i<$servicesLen;i++))
 do
 	if [ ${services[${i}]} == "sambaY" ]
 	then
-		
-	elif [ ${services[${i}]} == "ftp" ]
+		ufw allow netbios-ns
+		ufw allow netbios-dgm
+		ufw allow netbios-ssn
+		ufw allow microsoft-ds
+		apt-get install samba system-config-samba -y -qq
+		cp /etc/samba/smb.conf /home/$mainUser/Desktop/.backups/
+		if [ "$(grep '####### Authentication #######' /etc/samba/smb.conf)" == 0 ]
+		then
+			sed -i 
+		fi
+	elif [ ${services[${i}]} == "sambaN" ]
 	then
-		echo "ftp!!"
-	else
+	
+	elif [ ${services[${i}]} == "ftpY" ]
+	then
+
+	elif [ ${services[${i}]} == "ftpN" ]
+	then
+
+	elif [ ${services[${i}]} == "telnetY" ]
+	then
+
+	elif [ ${services[${i}]} == "telnetN" ]
+	then
+
+	elif [ ${services[${i}]} == "mailY" ]
+	then
+
+	elif [ ${services[${i}]} == "mailN" ]
+        then
+
+	elif [ ${services[${i}]} == "printY" ]
+        then
+
+	elif [ ${services[${i}]} == "printN" ]
+        then
+
+	elif [ ${services[${i}]} == "mysqlY" ]
+        then
+
+	elif [ ${services[${i}]} == "mysqlN" ]
+        then
+
+	elif [ ${services[${i}]} == "webserverY" ]
+        then
+
+	elif [ ${services[${i}]} == "webserverN" ]
+        then
+	
+	elif [ ${services[${i}]} == "dnsY" ]
+        then
+	
+	elif [ ${services[${i}]} == "dnsN" ]
+        then
+
+	elif [ ${services[${i}]} == "mediafilesY" ]
+        then
+
+	elif [ ${services[${i}]} == "mediafilesN" ]
+        then
+
+	elif [ ${services[${i}]} == "ipv6Y" ]
+        then
+
+	elif [ ${services[${i}]} == "ipv6N" ]
+        then
+
 	fi
 done
 
