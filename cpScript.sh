@@ -156,6 +156,15 @@ cp /etc/default/irqbalance /home/$mainUser/Desktop/.backups/
 rm -rf /etc/default/irqbalance
 echo -e "#Configuration for the irqbalance daemon\n\n#Should irqbalance be enabled?\nENABLED=\"0\"\n#Balance the IRQs only once?\nONESHOT=\"0\"" >> /etc/default/irqbalance
 
+# Fixing APT sources
+echo "[INFO] Fixing and Updating your APT sources..."
+cp /etc/apt/sources.list /home/$mainUser/Desktop/.backups/
+release=$(lsb_release -c -s)
+rm -rf /etc/apt/sources.list
+echo -e "deb http://us.archive.ubuntu.com/ubuntu/ $release $release-updates main restricted universe multiverse $release-backports\ndeb-src http://us.archive.ubuntu.com/ubuntu/ $release-updates main restricted universe multiverse $release-backports\ndeb http://security.ubuntu.com/ubuntu $release-security main restricted universe multiverse\ndeb-src http://security.ubuntu.com/ubuntu $release-security main restricted universe multiverse" >> /etc/apt/sources.list
+apt-get update
+apt-get upgrade -y -qq
+
 
 clear 
 echo "[INFO] Type the name of critical services need out of this list along with a Y or N (case sensitive). Separate them by spaces."
@@ -216,9 +225,34 @@ do
 		ufw allow saft
 		ufw allow ftps-data
 		ufw allow ftps
-		systemctl restart pureftpd
+		apt-get install pure-ftpd -y -qq
+		systemctl enable --now pure-ftpd
+		echo "[INFO] PureFTP has been installed and started on your system."
+
 	elif [ ${services[${i}]} == "ftpN" ]
 	then
+		ufw deny ftp
+		ufw deny sftp
+		ufw deny saft
+		ufw deny ftps-data
+		ufw deny ftps
+		apt-get purge pure-ftpd -y -qq
+		echo "[INFO] PureFTP has been removed from your system."
+	elif [ ${services[${i}]} == "sshY" ]
+        then
+		apt-get install openssh-server -y -qq
+		ufw allow ssh
+		cp /etc/ssh/sshd_config /home/$mainUser/Desktop/.backups/
+		sshUsers=()
+		for (( i=0;i<$uslen;i++))
+		do
+			clear
+			echo "[INFO] Give ${users[${i}]} SSH permission?"
+			read sshUser
+			sshUsers+=("$sshUser")
+
+	elif [ ${services[${i}]} == "sshN" ]
+        then
 
 	elif [ ${services[${i}]} == "telnetY" ]
 	then
