@@ -16,6 +16,7 @@ uslen=${#users[@]}
 echo "### Existing User Changed Passwords ###" >> /home/$mainUser/Desktop/.backups/passwords.txt
 for (( i=0;i<$uslen;i++)) 
 do
+	echo "[Phase 1] User Management"
 	echo "[INFO] Ignore user ${users[${i}]}? (Do this if it is a system user) (y/n)"
         read ignoreusr
 	if [ $ignoreusr == n ] 
@@ -81,6 +82,7 @@ done
 # New User Management
 echo "### New User Passwords" >> /home/$mainUser/Desktop/.backups/passwords.txt
 clear
+echo "[Phase 1] User Management"
 echo "[INFO] Type any new user account names below. Separate names using spaces."
 read -a newUsers
 
@@ -130,6 +132,7 @@ done
 
 # Basic Security Measures
 clear
+echo "[Phase 2] Basic Security"
 echo "[INFO] Doing basic security..."
 # Locking root account
 usermod -L root
@@ -156,7 +159,12 @@ echo -e "#Configuration for the irqbalance daemon\n\n#Should irqbalance be enabl
 echo "[INFO] Fixing and Updating your APT sources..."
 cp /etc/apt/sources.list /home/$mainUser/Desktop/.backups/
 release=$(lsb_release -c -s)
-echo -e "deb http://us.archive.ubuntu.com/ubuntu/ $release $release-updates main restricted universe multiverse \ndeb-src http://us.archive.ubuntu.com/ubuntu/ $release-updates main restricted universe multiverse \ndeb http://security.ubuntu.com/ubuntu $release-security main restricted universe multiverse\ndeb-src http://security.ubuntu.com/ubuntu $release-security main restricted universe multiverse" > /etc/apt/sources.list
+echo -e "deb http://us.archive.ubuntu.com/ubuntu/ $release main restricted universe multiverse" > /etc/apt/sources.list
+echo -e "deb-src http://us.archive.ubuntu.com/ubuntu/ $release main restricted universe multiverse" >> /etc/apt/sources.list
+echo -e "deb http://us.archive.ubuntu.com/ubuntu/ $release-updates main restricted universe multiverse" >> /etc/apt/sources.list
+echo -e "deb-src http://us.archive.ubuntu.com/ubuntu/ $release-updates main restricted universe multiverse" >> /etc/apt/sources.list
+echo -e "deb http://security.ubuntu.com/ubuntu $release-security main restricted universe multiverse" >> /etc/apt/sources.list
+echo -e "deb-src http://security.ubuntu.com/ubuntu $release-security main restricted universe multiverse" >> /etc/apt/sources.list
 apt-get update
 apt-get upgrade -y -qq
 echo "[INFO] Updates have been complete."
@@ -168,9 +176,10 @@ echo -e 'APT::Periodic::Update-Package-Lists "1";\nAPT::Periodic::Download-Upgra
 echo "[INFO] Auto upgrades have been enabled."
 
 clear 
+echo "[Phase 3] Service Management"
 echo "[INFO] Type the name of critical services need out of this list along with a Y or N (case sensitive). Separate them by spaces."
 echo "[INFO] Example: sambaY ftpN sshY telnetY mailN"
-echo "[SEL] samba ftp ssh telnet mail print webserver dns ipv6"
+echo "[SEL] samba ftp ssh telnet mail print webserver dns"
 read -a services
 servicesLen=${#services[@]}
 
@@ -217,7 +226,7 @@ do
 		ufw deny netbios-dgm
 		ufw deny netbios-ssn
 		ufw deny microsoft-ds
-		apt-get purge samba samba-common samba-common-bin samba4 -y -qq
+		apt-get purge samba samba-common samba-common-bin -y -qq
 		echo "[INFO] Samba has been removed from the system."	
 	elif [ ${services[${i}]} == "ftpY" ]
 	then
@@ -249,6 +258,7 @@ do
 		for (( i=0;i<$uslen;i++))
 		do
 			clear
+			echo "[Phase 3] Service Management"
 			echo "[INFO] Give ${sshuserl[${i}]} SSH permission? (y/n)"
 			read sshUser
 			if [ $sshUser == y ]
@@ -339,15 +349,12 @@ do
 		ufw deny domain
 		apt-get purge bind9 -y -qq
 		echo "[INFO] DNS service has been removed."
-	elif [ ${services[${i}]} == "ipv6N" ]
-        then
-		echo -e "\n\n# Disable IPv6\nnet.ipv6.conf.all.disable_ipv6 = 1\nnet.ipv6.conf.default.disable_ipv6 = 1\nnet.ipv6.conf.lo.disable_ipv6 = 1" >> /etc/sysctl.conf
-		sysctl -p >> /dev/null
-		echo "[INFO] IPv6 has been disabled."
 	fi
 done
 
 # Media Files
+clear
+echo "[Phase 4] Finishing Phase Removal"
 echo "[INFO] Finding media files..."
 find /home -name "*.midi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
 find /home -name "*.mid" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
@@ -433,12 +440,15 @@ mflength=${#mediafiles[@]}
 for (( i=0;i<$mflength;i++))
 do
 	clear
+	echo "[Phase 4] Finishing Phase"
 	echo "[INFO] Do you want to delete ${mediafiles[${i}]}? (y/n)"
 	rm -i "${mediafiles[${i}]}"
 done
 echo "[INFO] Finished deleting files."
 
 # Password Policy
+clear
+echo "[Phase 4] Finishing Phase"
 echo "[INFO] Setting up PAM password policies..."
 apt-get install libpam-cracklib -y -qq
 cp /etc/pam.d/common-auth /home/$mainUser/Desktop/.backups/
@@ -465,31 +475,31 @@ echo "[INFO] Files have been backed up to /home/$mainUser/Desktop/.backups"
 echo "[INFO] Be sure to check this directory, as it contains passwords, backed up files, and more."
 echo "[INFO] This is what has been done on your system:"
 echo "--------------------"
-echo "- User Management"
-echo "- New User Management"
-echo "- Basic Security"
-echo "	- Turning off aliases"
+echo "- [Phase 1] User Management"
+echo "	- Existing User Management"
+echo "	- New User Management"
+echo "- [Phase 2] Basic Security"
 echo "	- Root account has been locked"
 echo "	- .bash_history permissions set to 640"
 echo "	- /etc/shadow permissions set to 604"
 echo "	- Startup apps have been disabled (backed up)"
 echo "	- UFW (firewall) has been enabled with port 1337 disabled"
 echo "	- /etc/hosts has been reset (backed up)"
-echo "- APT Sources are fixed"
-echo "- Auto updates have been enabled (daily)"
-echo "- Samba has been enabled/disabled"
-echo "- FTP has been enabled/disabled"
-echo "- Telnet has been enabled/disabled"
-echo "- Mail Server has been enabled/disabled"
-echo "- Printing Service has been enabled/disabled"
-echo "- MySQL has been enabled/disabled"
-echo "- Web Server has been enabled/disabled"
-echo "- DNS server has been enabled/disabled"
-echo "- IPv6 has been enabled/disabled"
-echo "- Media files have been listed in media-files.txt file and deleted (optional)."
-echo "- PAM Password Policies have been set. RETRY: 3 MINLEN: 8 DIFOK: 3 REJECT_USER: Enabled MINCLASS: 3 MAXREPEAT: 2 DCREDIT: 1 UCREDIT: 1 LCREDIT: 1 OCREDI: 1"
-echo "-	Firefox has been reinstalled with default settings."
-echo "- Malicious Programs have been removed."
+echo "	- APT Sources are fixed"
+echo "	- Auto updates have been enabled (daily)"
+echo "-	[Phase 3] Service Management"
+echo "	- Samba has been enabled/disabled"
+echo "	- FTP has been enabled/disabled"
+echo "	- Telnet has been enabled/disabled"
+echo "	- Mail Server has been enabled/disabled"
+echo "	- Printing Service has been enabled/disabled"
+echo "	- Web Server has been enabled/disabled"
+echo "	- DNS server has been enabled/disabled"
+echo "-	[Phase 4] Finishing Phase" 
+echo "	- Media files have been listed in media-files.txt file and deleted (optional)."
+echo "	- PAM Password Policies have been set. RETRY: 3 MINLEN: 8 DIFOK: 3 REJECT_USER: Enabled MINCLASS: 3 MAXREPEAT: 2 DCREDIT: 1 UCREDIT: 1 LCREDIT: 1 OCREDI: 1"
+echo "	- Firefox has been reinstalled with default settings."
+echo "	- Malicious Programs have been removed."
 echo "--------------------"
 echo "[INFO] Be sure to check for prohibited programs."
-echo "[INFO] Thanks for running the script. 
+echo "[INFO] Thanks for running the script. Made by Josh K." 
