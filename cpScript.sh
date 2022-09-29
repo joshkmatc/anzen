@@ -254,8 +254,9 @@ do
 		ufw allow ssh
 		cp /etc/ssh/sshd_config /home/$mainUser/Desktop/.backups/
 		readarray -t sshuserl < <(getent passwd | cut -d: -f1 | sort)
+		sshuserlen=${#sshuserl[@]}
 		sshUsers=()
-		for (( i=0;i<$uslen;i++))
+		for (( i=0;i<$sshuserlen;i++))
 		do
 			clear
 			echo "[Phase 3] Service Management"
