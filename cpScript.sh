@@ -343,10 +343,124 @@ do
 	fi
 done
 
-echo "Script has completed."
-echo "Files have been backed up to /home/$mainUser/Desktop/.backups"
-echo "Be sure to check this directory, as it contains passwords, backed up files, and more."
-echo "This is what has been done on your system:"
+# Media Files
+echo "[INFO] Finding media files..."
+find / -name "*.midi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.mid" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.mod" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.mp3" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.mp2" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.mpa" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.abs" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.mpega" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt  
+find / -name "*.au" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.snd" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.wav" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.aiff" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt 
+find / -name "*.aif" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.sid" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.flac" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.ogg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.mpeg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.mpg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt	
+find / -name "*.mpe" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.dl" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.movie" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.movi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.mv" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.iff" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.anim5" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.anim3" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.anim7" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.avi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.vfw" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.avx" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.fli" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.flc" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.mov" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.qt" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.spl" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.swf" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.dcr" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.dir" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.dxr" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.rpm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.rm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.smi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.ra" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.ram" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.rv" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.wmv" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.asf" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.asx" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.wma" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.wax" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.wmv" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.wmx" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.3gp" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.mov" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.mp4" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.avi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.swf" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.flv" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.m4v" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.tiff" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.tif" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.rs" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.im1" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.gif" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.jpeg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.jpg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.jpe" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.png" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.rgb" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.xwd" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.xpm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.ppm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.pbm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.pgm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.pcx" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.ico" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.svg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find / -name "*.svgz" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+echo "[INFO] Found all media files."
+readarray -t mediafiles < <(cat /home/$mainUser/Desktop/.backups/media-files.txt)
+mflength=${#mediafiles[@]}
+for (( i=0;i<$mflength;i++))
+do
+	clear
+	echo "[INFO] Do you want to delete ${mediafiles[${i}]}? (y/n)"
+	rm -i "${mediafiles[${i}]}"
+done
+echo "[INFO] Finished deleting files."
+
+# Password Policy
+echo "[INFO] Setting up PAM password policies..."
+apt-get install libpam-cracklib -y -qq
+cp /etc/pam.d/common-auth /home/$mainUser/Desktop/.backups/
+cp /etc/pam.d/common-password /home/$mainUser/Desktop/.backups/
+echo -e "#\n# /etc/pam.d/common-auth - authentication settings common to all services\n#\n# This file is included from other service-specific PAM config files,\n# and should contain a list of the authentication modules that define\n# the central authentication scheme for use on the system\n# (e.g., /etc/shadow, LDAP, Kerberos, etc.).  The default is to use the\n# traditional Unix authentication mechanisms.\n#\n# As of pam 1.0.1-6, this file is managed by pam-auth-update by default.\n# To take advantage of this, it is recommended that you configure any\n# local modules either before or after the default block, and use\n# pam-auth-update to manage selection of other modules.  See\n# pam-auth-update(8) for details.\n\n# here are the per-package modules (the \"Primary\" block)\nauth	[success=1 default=ignore]	pam_unix.so nullok_secure\n# here's the fallback if no module succeeds\nauth	requisite			pam_deny.so\n# prime the stack with a positive return value if there isn't one already;\n# this avoids us returning an error just because nothing sets a success code\n# since the modules above will each just jump around\nauth	required			pam_permit.so\n# and here are more per-package modules (the \"Additional\" block)\nauth	optional			pam_cap.so \n# end of pam-auth-update config\nauth required pam_tally2.so deny=5 unlock_time=1800 onerr=fail audit even_deny_root_account silent" > /etc/pam.d/common-auth
+echo -e "#\n# /etc/pam.d/common-password - password-related modules common to all services\n#\n# This file is included from other service-specific PAM config files,\n# and should contain a list of modules that define the services to be\n# used to change user passwords.  The default is pam_unix.\n\n# Explanation of pam_unix options:\n#\n# The \"sha512\" option enables salted SHA512 passwords.  Without this option,\n# the default is Unix crypt.  Prior releases used the option \"md5\".\n#\n# The \"obscure\" option replaces the old \`OBSCURE_CHECKS_ENAB\' option in\n# login.defs.\n#\n# See the pam_unix manpage for other options.\n\n# As of pam 1.0.1-6, this file is managed by pam-auth-update by default.\n# To take advantage of this, it is recommended that you configure any\n# local modules either before or after the default block, and use\n# pam-auth-update to manage selection of other modules.  See\n# pam-auth-update(8) for details.\n\n# here are the per-package modules (the \"Primary\" block)\npassword	[success=1 default=ignore]	pam_unix.so obscure sha512\n# here's the fallback if no module succeeds\npassword	requisite			pam_deny.so\n# prime the stack with a positive return value if there isn't one already;\n# this avoids us returning an error just because nothing sets a success code\n# since the modules above will each just jump around\npassword	required			pam_permit.so\n# and here are more per-package modules (the \"Additional\" block)\npassword	optional	pam_gnome_keyring.so \npassword requisite pam_cracklib.so retry=3 minlen=8 difok=3 reject_username minclass=3 maxrepeat=2 dcredit=1 ucredit=1 lcredit=1 ocredit=1\npassword requisite pam_pwhistory.so use_authtok remember=24 enforce_for_root\n# end of pam-auth-update config" > /etc/pam.d/common-password
+echo "[INFO] The password policies for PAM have been set. RETRY: 3 MINLEN: 8 DIFOK: 3 REJECT_USER: Enabled MINCLASS: 3 MAXREPEAT: 2 DCREDIT: 1 UCREDIT: 1 LCREDIT: 1 OCREDI: 1"
+
+# Bad Programs
+echo "[INFO] Removing bad programs..."
+apt-get remove netcat netcat-openbsd netcat-traditional ncat pnetcat socat sock socket sbd john john-data hydra hydra-gtk aircrack-ng fcrackzip lcrack ophcrack ophcrack-cli pdfcrack pyrit rarcrack sipcrack irpas-y -qq
+rm /usr/bin/nc
+echo "[INFO] Removal of bad programs complete."
+
+# Reinstalling Firefox
+echo "[INFO] Reinstalling firefox..."
+apt-get purge firefox -y -qq
+apt-get install firefox -y -qq
+echo "[INFO] Installation complete."
+
+clear
+echo "[INFO] Script has completed."
+echo "[INFO] Files have been backed up to /home/$mainUser/Desktop/.backups"
+echo "[INFO] Be sure to check this directory, as it contains passwords, backed up files, and more."
+echo "[INFO] This is what has been done on your system:"
+echo "--------------------"
 echo "- User Management"
 echo "- New User Management"
 echo "- Basic Security"
@@ -368,4 +482,10 @@ echo "- MySQL has been enabled/disabled"
 echo "- Web Server has been enabled/disabled"
 echo "- DNS server has been enabled/disabled"
 echo "- IPv6 has been enabled/disabled"
-echo "- Media files have been listed in prohibited-files.txt file and deleted (optional)."
+echo "- Media files have been listed in media-files.txt file and deleted (optional)."
+echo "- PAM Password Policies have been set. RETRY: 3 MINLEN: 8 DIFOK: 3 REJECT_USER: Enabled MINCLASS: 3 MAXREPEAT: 2 DCREDIT: 1 UCREDIT: 1 LCREDIT: 1 OCREDI: 1"
+echo "-	Firefox has been reinstalled with default settings."
+echo "- Malicious Programs have been removed."
+echo "--------------------"
+echo "[INFO] Be sure to check for prohibited programs."
+echo "[INFO] Thanks for running the script. 
