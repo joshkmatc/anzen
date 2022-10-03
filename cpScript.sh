@@ -25,8 +25,13 @@ do
 		read deluser 
 		if [ $deluser == y ]
 		then
-			userdel -r ${users[${i}]}
-			echo "[INFO] User ${users[${i}]} has been deleted"
+			echo "[INFO] Are you sure? (y/n)"
+			read deluserconf
+			if [ $deluserconf == y ] 
+			then
+				userdel -r ${users[${i}]}
+				echo "[INFO] User ${users[${i}]} has been deleted"
+			fi
 		else
 			echo "[INFO] Make ${users[${i}]} an admin? (y/n)"
 			read admuser
@@ -142,6 +147,9 @@ chmod 604 /etc/shadow
 # Startup apps
 cp /etc/rc.local /home/$mainUser/Desktop/.backups/
 echo 'exit 0' > /etc/rc.local
+# Removal of Prohibited Programs
+apt-get purge manaplus manaplus-data gameconqueror -y -qq
+
 # Firewall
 apt-get install ufw -y -qq
 ufw enable
