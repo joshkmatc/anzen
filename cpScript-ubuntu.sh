@@ -135,6 +135,35 @@ do
         fi
 done
 
+# Reassinging variables for later use
+readarray -t users < <(getent passwd | cut -d: -f1 | sort)
+uslen=${#users[@]}
+
+# New Group Management
+clear
+echo "[Phase 1] User Management"
+echo "[INFO] Type any new groups names below. Separate names using spaces."
+read -a newGroups
+
+nGrpsL=${#newGroups[@]}
+
+for (( i=0;j<$nGrpsL;i++))
+do
+	groupadd "${newGroups[${i}]}"
+	echo "[INFO] The group ${newGroups[${i}]} has been added to the system."
+	for (( j=0;j<$uslen;j++))
+	do
+		clear
+		echo "[INFO] Add ${users[${j}]} to the ${newGroups[${i}]} group? (y/n)"
+        	read addGroup
+                if [ $addGroup == y ]
+                then
+			usermod -a -G ${newGroups[${i}]} ${users[${j}]}
+			echo "[INFO] ${users[${j}]} has been added to the ${newGroups[${i}]} group."
+		fi
+done
+
+
 # Basic Security Measures
 clear
 echo "[Phase 2] Basic Security"
@@ -147,8 +176,6 @@ chmod 604 /etc/shadow
 # Startup apps
 cp /etc/rc.local /home/$mainUser/Desktop/.backups/
 echo 'exit 0' > /etc/rc.local
-# Removal of Prohibited Programs
-apt-get purge manaplus manaplus-data gameconqueror -y -qq
 
 # Firewall
 apt-get install ufw -y -qq
@@ -162,6 +189,12 @@ chmod 644 /etc/hosts
 # CPU Timings
 cp /etc/default/irqbalance /home/$mainUser/Desktop/.backups/
 echo -e "#Configuration for the irqbalance daemon\n\n#Should irqbalance be enabled?\nENABLED=\"0\"\n#Balance the IRQs only once?\nONESHOT=\"0\"" > /etc/default/irqbalance
+
+# Crontab
+echo "[INFO] Crontab is being backed up and disabled..."
+crontab -l > /home/$mainUser/Desktop/.backups/crontab
+crontab -r
+echo "[INFO] Crontab has been backed up and disabled"
 
 # Fixing APT sources
 echo "[INFO] Fixing and Updating your APT sources..."
@@ -182,6 +215,15 @@ echo "[INFO] Turning auto upgrades on..."
 cp /etc/apt/apt.conf.d/20auto-upgrades /home/$mainUser/Desktop/.backups/
 echo -e 'APT::Periodic::Update-Package-Lists "1";\nAPT::Periodic::Download-Upgradeable-Packages "0";\nAPT::Periodic::AutocleanInterval "0";\nAPT::Periodic::Unattended-Upgrade "1";' > /etc/apt/apt.conf.d/20auto-upgrades
 echo "[INFO] Auto upgrades have been enabled."
+
+echo "[INFO] Fixing sudoers file..."
+cp /etc/sudoers /home/$mainUser/Desktop/.backups/
+echo -e "#\n# This file MUST be edited with the 'visudo' command as root.\n#\n# Please consider adding local content in /etc/sudoers.d/ instead of\n# directly modifying this file.\n#\n# See the man page for details on how to write a sudoers file.\n#\nDefaults	env_reset\nDefaults	mail_badpass\nDefaults	secure_path=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin\"\nDefaults	use_pty\n\n# This preserves proxy settings from user environments of root\n# equivalent users (group sudo)\n#Defaults:%sudo env_keep += \"http_proxy https_proxy ftp_proxy all_proxy no_proxy\"\n\n# This allows running arbitrary commands, but so does ALL, and it means\n\n# different sudoers have their choice of editor respected.\n#Defaults:%sudo env_keep += \"EDITOR\"\n\n# Completely harmless preservation of a user preference.\n#Defaults:%sudo env_keep += \"GREP_COLOR\"\n\n# While you shouldn't normally run git as root, you need to with etckeeper\n#Defaults:%sudo env_keep += \"GIT_AUTHOR_* GIT_COMMITTER_*\"\n\n# Per-user preferences; root won't have sensible values for them.\n#Defaults:%sudo env_keep += \"EMAIL DEBEMAIL DEBFULLNAME\"\n\n# \"sudo scp\" or \"sudo rsync\" should be able to use your SSH agent.\n#Defaults:%sudo env_keep += \"SSH_AGENT_PID SSH_AUTH_SOCK\"\n\n# Ditto for GPG agent\n#Defaults:%sudo env_keep += \"GPG_AGENT_INFO\"\n\n# Host alias specification\n\n# User alias specification\n\n# Cmnd alias specification\n\n# User privilege specification\nroot	ALL=(ALL:ALL) ALL\n\n# Members of the admin group may gain root privileges\n%admin ALL=(ALL) ALL\n\n# Allow members of group sudo to execute any command\n%sudo	ALL=(ALL:ALL) ALL\n\n# See sudoers(5) for more information on \"@include\" directives:\n\n@includedir /etc/sudoers.d" > /etc/sudoers
+chmod 0440 /etc/sudoers
+echo "[INFO] Sudoers file is fixed."
+echo "[INFO] Fixing permissions..."
+chmod 0640 /etc/shadow
+chmod 0644 /etc/passwd
 
 clear 
 echo "[Phase 3] Service Management"
@@ -254,8 +296,8 @@ do
 		ufw deny saft
 		ufw deny ftps-data
 		ufw deny ftps
-		apt-get purge pure-ftpd -y -qq
-		echo "[INFO] PureFTP has been removed from your system."
+		apt-get purge pure-ftpd vsftpd -y -qq
+		echo "[INFO] FTP has been removed from your system."
 	elif [ ${services[${i}]} == "sshY" ]
         then
 		apt-get install openssh-server -y -qq
@@ -468,8 +510,10 @@ echo "[INFO] The password policies for PAM have been set. RETRY: 3 MINLEN: 8 DIF
 
 # Bad Programs
 echo "[INFO] Removing bad programs..."
-apt-get remove netcat netcat-openbsd netcat-traditional ncat pnetcat socat sock socket sbd john john-data hydra hydra-gtk aircrack-ng fcrackzip lcrack ophcrack ophcrack-cli pdfcrack pyrit rarcrack sipcrack irpas-y -qq
+apt-get purge netcat netcat-openbsd netcat-traditional ncat pnetcat socat sock socket sbd john john-data hydra hydra-gtk aircrack-ng fcrackzip lcrack ophcrack ophcrack-cli pdfcrack pyrit rarcrack sipcrack irpas manaplus manaplus-data gameconqueror freeciv -y -qq
+snap remove obs-studio duckmarines
 rm /usr/bin/nc
+rm /usr/bin/backdoor
 echo "[INFO] Removal of bad programs complete."
 
 # Reinstalling Firefox
