@@ -6,106 +6,109 @@ then
 	exit
 fi
 
-
-
 mainUser=${SUDO_USER:-${USER}}
 # Backup directory
 mkdir -p /home/$mainUser/Desktop/.backups
 
-# Forensics mode
-if [[ $1 == "-f" ]]
-then
-	echo "[INFO] Gathering information for forensics questions..."
-	find /home -name "*.midi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.mid" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.mod" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.mp3" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.mp2" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.mpa" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.abs" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.mpega" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt  
-	find /home -name "*.au" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.snd" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.wav" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.aiff" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt 
-	find /home -name "*.aif" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.sid" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.flac" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.ogg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.mpeg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.mpg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt	
-	find /home -name "*.mpe" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.dl" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.movie" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.movi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.mv" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.iff" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.anim5" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.anim3" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.anim7" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.avi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.vfw" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.avx" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.fli" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.flc" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.mov" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.qt" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.spl" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.swf" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.dcr" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.dir" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.dxr" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.rpm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.rm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.smi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.ra" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.ram" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.rv" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.wmv" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.asf" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.asx" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.wma" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.wax" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.wmv" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.wmx" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.3gp" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.mov" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.mp4" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.avi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.swf" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.flv" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.m4v" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.tiff" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.tif" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.rs" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.im1" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.gif" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.jpeg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.jpg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.jpe" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.png" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.rgb" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.xwd" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.xpm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.ppm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.pbm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.pgm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.pcx" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.ico" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.svg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	find /home -name "*.svgz" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-	echo "[INFO] Found media files. Listing users..."
-	readarray -t userList < <(getent passwd | cut -d: -f1 | sort)
-	userlen=${#userList[@]}
-	echo "## USERS ##" > /home/$mainUser/Desktop/.backups/users.txt
-	for ((i=0;i<$userlen;i++))
-	do
-		echo "Username: ${userList[${i}]} | ID: $(id ${userList[${i}]} | cut -d ' ' -f1)" >> /home/$mainUser/Desktop/.backups/users.txt
-	done
-fi
-echo "[INFO] Welcome to the CyberPatriot Script for 2022-23. Made by Josh K."
-echo "[INFO] You should do the forensics questions before starting. Use the -f flag with this script to gather basic information for these questions"
-echo "[INFO] Press enter when you are ready to start."
+# Forensics Questions
+echo "[INFO] Gathering information for forensics questions..."
+find /home -name "*.midi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.mid" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.mod" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.mp3" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.mp2" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.mpa" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.abs" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.mpega" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt  
+find /home -name "*.au" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.snd" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.wav" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.aiff" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt 
+find /home -name "*.aif" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.sid" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.flac" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.ogg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.mpeg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.mpg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt	
+find /home -name "*.mpe" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.dl" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.movie" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.movi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.mv" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.iff" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.anim5" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.anim3" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.anim7" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.avi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.vfw" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.avx" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.fli" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.flc" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.mov" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.qt" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.spl" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.swf" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.dcr" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.dir" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.dxr" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.rpm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.rm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.smi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.ra" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.ram" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.rv" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.wmv" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.asf" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.asx" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.wma" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.wax" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.wmv" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.wmx" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.3gp" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.mov" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.mp4" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.avi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.swf" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.flv" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.m4v" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.tiff" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.tif" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.rs" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.im1" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.gif" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.jpeg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.jpg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.jpe" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.png" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.rgb" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.xwd" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.xpm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.ppm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.pbm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.pgm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.pcx" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.ico" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.svg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.svgz" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+echo "[INFO] Found media files. Listing users..."
+readarray -t userList < <(getent passwd | cut -d: -f1 | sort)
+userlen=${#userList[@]}
+echo "## USERS ##" > /home/$mainUser/Desktop/.backups/users.txt
+for ((i=0;i<$userlen;i++))
+do
+	echo "Username: ${userList[${i}]} | ID: $(id ${userList[${i}]} | cut -d ' ' -f1)" >> /home/$mainUser/Desktop/.backups/users.txt
+done
+clear
+echo "    ___                         
+   /   |  ____  ____  ___  ____ 
+  / /| | / __ \\/_  / / _ \\/ __ \\
+ / ___ |/ / / / / /_/  __/ / / /
+/_/  |_/_/ /_/ /___/\\___/_/ /_/ "
+echo "[INFO] Welcome to Anzen Ubuntu, a script made for the CyberPatriot Competition. Made by Josh K."
+echo "[INFO] Ensure you do the forensic questions BEFORE you start."
+echo "[INFO] Media files and users are located in /home/$mainUser/Desktop/.backups"
+echo ""
+echo "[INFO] Press Enter when you are ready to start."
 read
 
 # User Management
@@ -245,7 +248,7 @@ read -a newGroups
 
 nGrpsL=${#newGroups[@]}
 
-for (( i=0;j<$nGrpsL;i++))
+for (( i=0;i<$nGrpsL;i++))
 do
 	groupadd "${newGroups[${i}]}"
 	echo "[INFO] The group ${newGroups[${i}]} has been added to the system."
@@ -259,6 +262,7 @@ do
 			usermod -a -G ${newGroups[${i}]} ${users[${j}]}
 			echo "[INFO] ${users[${j}]} has been added to the ${newGroups[${i}]} group."
 		fi
+	done
 done
 
 
@@ -268,6 +272,7 @@ echo "[Phase 2] Basic Security"
 echo "[INFO] Doing basic security..."
 # Locking root account
 usermod -L root
+passwd -l root
 # Setting permissions for files
 chmod 640 .bash_history
 chmod 604 /etc/shadow
@@ -276,23 +281,36 @@ cp /etc/rc.local /home/$mainUser/Desktop/.backups/
 echo 'exit 0' > /etc/rc.local
 
 # Firewall
+echo "[INFO] Enabling firewall..."
 apt-get install ufw -y -qq
 ufw enable
 ufw deny 1337
+echo "[INFO] Firewall enabled."
 # Default /etc/hosts file
+echo "[INFO] Fixing /etc/hosts file..."
 cp /etc/hosts /home/$mainUser/Desktop/.backups/
 chmod 777 /etc/hosts
 echo -e "127.0.0.1 localhost\n127.0.1.1 $HOSTNAME\n::1 ip6-localhost ip6-loopback\nfe00::0 ip6-localnet\nff00::0 ip6-mcastprefix\nff02::1 ip6-allnodes\nff02::2 ip6-allrouters" > /etc/hosts
 chmod 644 /etc/hosts
+echo "[INFO] /etc/hosts file fixed."
 # CPU Timings
+echo "[INFO] Fixing irqbalance (CPU Timings) file..."
 cp /etc/default/irqbalance /home/$mainUser/Desktop/.backups/
 echo -e "#Configuration for the irqbalance daemon\n\n#Should irqbalance be enabled?\nENABLED=\"0\"\n#Balance the IRQs only once?\nONESHOT=\"0\"" > /etc/default/irqbalance
+echo "[INFO] irqbalance file fixed."
 
 # Crontab
 echo "[INFO] Crontab is being backed up and disabled..."
 crontab -l > /home/$mainUser/Desktop/.backups/crontab
 crontab -r
 echo "[INFO] Crontab has been backed up and disabled"
+
+# Passwords /etc/login.defs
+echo "[INFO] Changing login.defs file..."
+sed -i 's/PASS_MAX_DAYS        99999/PASS_MAX_DAYS     30/' /etc/login.defs
+sed -i 's/PASS_MIN_DAYS	0/PASS_MIN_DAYS	1/' /etc/login.defs
+sed -i 's/PASS_WARN_AGE	7/PASS_WARN_AGE	15/' /etc/login.defs
+echo "[INFO] login.defs file has been changed. MAX: 30 MIN: 1 WARN: 7"
 
 # Fixing APT sources
 echo "[INFO] Fixing and Updating your APT sources..."
@@ -316,7 +334,7 @@ echo "[INFO] Auto upgrades have been enabled."
 
 echo "[INFO] Fixing sudoers file..."
 cp /etc/sudoers /home/$mainUser/Desktop/.backups/
-echo -e "#\n# This file MUST be edited with the 'visudo' command as root.\n#\n# Please consider adding local content in /etc/sudoers.d/ instead of\n# directly modifying this file.\n#\n# See the man page for details on how to write a sudoers file.\n#\nDefaults	env_reset\nDefaults	mail_badpass\nDefaults	secure_path=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin\"\nDefaults	use_pty\n\n# This preserves proxy settings from user environments of root\n# equivalent users (group sudo)\n#Defaults:%sudo env_keep += \"http_proxy https_proxy ftp_proxy all_proxy no_proxy\"\n\n# This allows running arbitrary commands, but so does ALL, and it means\n\n# different sudoers have their choice of editor respected.\n#Defaults:%sudo env_keep += \"EDITOR\"\n\n# Completely harmless preservation of a user preference.\n#Defaults:%sudo env_keep += \"GREP_COLOR\"\n\n# While you shouldn't normally run git as root, you need to with etckeeper\n#Defaults:%sudo env_keep += \"GIT_AUTHOR_* GIT_COMMITTER_*\"\n\n# Per-user preferences; root won't have sensible values for them.\n#Defaults:%sudo env_keep += \"EMAIL DEBEMAIL DEBFULLNAME\"\n\n# \"sudo scp\" or \"sudo rsync\" should be able to use your SSH agent.\n#Defaults:%sudo env_keep += \"SSH_AGENT_PID SSH_AUTH_SOCK\"\n\n# Ditto for GPG agent\n#Defaults:%sudo env_keep += \"GPG_AGENT_INFO\"\n\n# Host alias specification\n\n# User alias specification\n\n# Cmnd alias specification\n\n# User privilege specification\nroot	ALL=(ALL:ALL) ALL\n\n# Members of the admin group may gain root privileges\n%admin ALL=(ALL) ALL\n\n# Allow members of group sudo to execute any command\n%sudo	ALL=(ALL:ALL) ALL\n\n# See sudoers(5) for more information on \"@include\" directives:\n\n@includedir /etc/sudoers.d" > /etc/sudoers
+echo -e "#\n# This file MUST be edited with the 'visudo' command as root.\n#\n# Please consider adding local content in /etc/sudoers.d/ instead of\n# directly modifying this file.\n#\n# See the man page for details on how to write a sudoers file.\n#\nDefaults	env_reset\nDefaults	mail_badpass\nDefaults	secure_path=\"/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin\"\nDefaults	use_pty\n\n# This preserves proxy settings from user environments of root\n# equivalent users (group sudo)\n#Defaults:%sudo env_keep += \"http_proxy https_proxy ftp_proxy all_proxy no_proxy\"\n\n# This allows running arbitrary commands, but so does ALL, and it means\n\n# different sudoers have their choice of editor respected.\n#Defaults:%sudo env_keep += \"EDITOR\"\n\n# Completely harmless preservation of a user preference.\n#Defaults:%sudo env_keep += \"GREP_COLOR\"\n\n# While you shouldn't normally run git as root, you need to with etckeeper\n#Defaults:%sudo env_keep += \"GIT_AUTHOR_* GIT_COMMITTER_*\"\n\n# Per-user preferences; root won't have sensible values for them.\n#Defaults:%sudo env_keep += \"EMAIL DEBEMAIL DEBFULLNAME\"\n\n# \"sudo scp\" or \"sudo rsync\" should be able to use your SSH agent.\n#Defaults:%sudo env_keep += \"SSH_AGENT_PID SSH_AUTH_SOCK\"\n\n# Ditto for GPG agent\n#Defaults:%sudo env_keep += \"GPG_AGENT_INFO\"\n\n# Host alias specification\n\n# User alias specification\n\n# Cmnd alias specification\n\n# User privilege specification\nroot	ALL=(ALL:ALL) ALL\n\n# Members of the admin group may gain root privileges\n%admin ALL=(ALL) ALL\n\n# Allow members of group sudo to execute any command\n%sudo	ALL=(ALL:ALL) ALL\n\n# See sudoers(5) for more information on \"@include\" directives:" > /etc/sudoers
 chmod 0440 /etc/sudoers
 echo "[INFO] Sudoers file is fixed."
 echo "[INFO] Fixing permissions..."
@@ -472,16 +490,21 @@ do
 		echo "[INFO] Print services have been blocked in the firewall."
 	elif [ ${services[${i}]} == "webserverY" ]
         then
-		apt-get install apache2 -y -qq
+		echo "[INFO] Install apache2? (y/n)"
+		read apache
+		if [ $apache == y ]
+		then
+			apt-get install apache2 -y -qq
+			cp /etc/apache2/apache2.conf > /home/$mainUser/Desktop/.backups/
+			if [ -e /etc/apache2/apache2.conf ]
+			then
+				echo -e '\<Directory \>\n\t AllowOverride None\n\t Order Deny,Allow\n\t Deny from all\n\<Directory \/\>\nUserDir disabled root' >> /etc/apache2/apache2.conf
+			fi
+			chown -R root:root /etc/apache2
+		fi
 		ufw allow http
 		ufw allow https
-		cp /etc/apache2/apache2.conf > /home/$mainUser/Desktop/.backups/
-		if [ -e /etc/apache2/apache2.conf ]
-		then
-			echo -e '\<Directory \>\n\t AllowOverride None\n\t Order Deny,Allow\n\t Deny from all\n\<Directory \/\>\nUserDir disabled root' >> /etc/apache2/apache2.conf
-		fi
-		chown -R root:root /etc/apache2
-		echo "[INFO] Web services have been enabled (apache2)."
+		echo "[INFO] Web services have been enabled."
 	elif [ ${services[${i}]} == "webserverN" ]
         then
 		ufw deny http
@@ -608,8 +631,14 @@ echo "[INFO] The password policies for PAM have been set. RETRY: 3 MINLEN: 8 DIF
 
 # Bad Programs
 echo "[INFO] Removing bad programs..."
-apt-get purge netcat netcat-openbsd netcat-traditional ncat pnetcat socat sock socket sbd john john-data hydra hydra-gtk aircrack-ng fcrackzip lcrack ophcrack ophcrack-cli pdfcrack pyrit rarcrack sipcrack irpas manaplus manaplus-data gameconqueror freeciv -y -qq
-snap remove obs-studio duckmarines
+badPrograms=("netcat" "netcat-openbsd" "netcat-traditional" "ncat" "pnetcat" "socat" "sock" "socket" "sbd" "john" "john-data" "hydra" "hydra-gtk" "aircrack-ng" "fcrackzip" "lcrack" "ophcrack" "ophcrack-cli" "pdfcrack" "pyrit" "rarcrack" "sipcrack" "irpas" "manaplus" "manaplus-data" "gameconqueror" "freeciv")
+badSnaps=("obs-studio" "duckmarines")
+for badp in ${badPrograms[@]}; do
+	apt-get purge $badp -y -qq
+done
+for bads in ${badSnaps[@]}; do
+	snap remove $bads
+done
 rm /usr/bin/nc
 rm /usr/bin/backdoor
 echo "[INFO] Removal of bad programs complete."
@@ -636,6 +665,7 @@ echo "	- /etc/shadow permissions set to 604"
 echo "	- Startup apps have been disabled (backed up)"
 echo "	- UFW (firewall) has been enabled with port 1337 disabled"
 echo "	- /etc/hosts has been reset (backed up)"
+echo "	- /etc/login.defs has been set. MIN: 1 MAX: 30 WARN: 15"
 echo "	- APT Sources are fixed"
 echo "	- Auto updates have been enabled (daily)"
 echo "-	[Phase 3] Service Management"
