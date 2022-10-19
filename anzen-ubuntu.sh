@@ -104,9 +104,15 @@ echo "    ___
   / /| | / __ \\/_  / / _ \\/ __ \\
  / ___ |/ / / / / /_/  __/ / / /
 /_/  |_/_/ /_/ /___/\\___/_/ /_/ "
+echo ""
+echo ""
 echo "[INFO] Welcome to Anzen Ubuntu, a script made for the CyberPatriot Competition. Made by Josh K."
+echo "-----------------------------------------------------------------------------------------------"
 echo "[INFO] Ensure you do the forensic questions BEFORE you start."
 echo "[INFO] Media files and users are located in /home/$mainUser/Desktop/.backups"
+echo "[INFO] If a User ID is equal to 0 and it isn't the root user, modify the user's ID in the /etc/passwd file."
+echo "[INFO] Delete the user, then continue with the script."
+echo "-----------------------------------------------------------------------------------------------"
 echo ""
 echo "[INFO] Press Enter when you are ready to start."
 read
