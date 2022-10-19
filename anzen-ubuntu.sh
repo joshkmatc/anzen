@@ -647,6 +647,7 @@ echo "[INFO] Removal of bad programs complete."
 echo "[INFO] Reinstalling firefox..."
 apt-get purge firefox -y -qq
 apt-get install firefox -y -qq
+rm -rf /home/$mainUser/.mozilla/firefox/
 echo "[INFO] Installation complete."
 
 clear
