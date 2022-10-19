@@ -631,7 +631,7 @@ echo "[INFO] The password policies for PAM have been set. RETRY: 3 MINLEN: 8 DIF
 
 # Bad Programs
 echo "[INFO] Removing bad programs..."
-badPrograms=("netcat" "netcat-openbsd" "netcat-traditional" "ncat" "pnetcat" "socat" "sock" "socket" "sbd" "john" "john-data" "hydra" "hydra-gtk" "aircrack-ng" "fcrackzip" "lcrack" "ophcrack" "ophcrack-cli" "pdfcrack" "pyrit" "rarcrack" "sipcrack" "irpas" "manaplus" "manaplus-data" "gameconqueror" "freeciv")
+badPrograms=("netcat" "netcat-openbsd" "netcat-traditional" "ncat" "pnetcat" "socat" "sock" "socket" "sbd" "john" "john-data" "hydra" "hydra-gtk" "aircrack-ng" "fcrackzip" "lcrack" "ophcrack" "ophcrack-cli" "pdfcrack" "pyrit" "rarcrack" "sipcrack" "irpas" "manaplus" "manaplus-data" "gameconqueror" "freeciv" "dsniff")
 badSnaps=("obs-studio" "duckmarines")
 for badp in ${badPrograms[@]}; do
 	apt-get purge $badp -y -qq
