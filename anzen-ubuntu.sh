@@ -307,9 +307,9 @@ echo "[INFO] Crontab has been backed up and disabled"
 
 # Passwords /etc/login.defs
 echo "[INFO] Changing login.defs file..."
-sed -i 's/PASS_MAX_DAYS        99999/PASS_MAX_DAYS     30/' /etc/login.defs
-sed -i 's/PASS_MIN_DAYS	0/PASS_MIN_DAYS	1/' /etc/login.defs
-sed -i 's/PASS_WARN_AGE	7/PASS_WARN_AGE	15/' /etc/login.defs
+sed -i '/PASS_MAX_DAYS/c\PASS_MAX_DAYS     30' /etc/login.defs
+sed -i '/PASS_MIN_DAYS\c/PASS_MIN_DAYS	1' /etc/login.defs
+sed -i '/PASS_WARN_AGE\c/PASS_WARN_AGE	15' /etc/login.defs
 echo "[INFO] login.defs file has been changed. MAX: 30 MIN: 1 WARN: 7"
 
 # Fixing APT sources
@@ -527,86 +527,6 @@ done
 # Media Files
 clear
 echo "[Phase 4] Finishing Phase Removal"
-echo "[INFO] Finding media files..."
-find /home -name "*.midi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.mid" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.mod" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.mp3" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.mp2" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.mpa" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.abs" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.mpega" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt  
-find /home -name "*.au" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.snd" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.wav" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.aiff" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt 
-find /home -name "*.aif" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.sid" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.flac" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.ogg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.mpeg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.mpg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt	
-find /home -name "*.mpe" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.dl" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.movie" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.movi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.mv" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.iff" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.anim5" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.anim3" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.anim7" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.avi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.vfw" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.avx" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.fli" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.flc" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.mov" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.qt" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.spl" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.swf" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.dcr" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.dir" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.dxr" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.rpm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.rm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.smi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.ra" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.ram" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.rv" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.wmv" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.asf" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.asx" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.wma" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.wax" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.wmv" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.wmx" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.3gp" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.mov" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.mp4" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.avi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.swf" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.flv" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.m4v" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.tiff" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.tif" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.rs" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.im1" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.gif" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.jpeg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.jpg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.jpe" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.png" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.rgb" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.xwd" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.xpm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.ppm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.pbm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.pgm" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.pcx" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.ico" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.svg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-find /home -name "*.svgz" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-echo "[INFO] Found all media files."
 readarray -t mediafiles < <(cat /home/$mainUser/Desktop/.backups/media-files.txt)
 mflength=${#mediafiles[@]}
 for (( i=0;i<$mflength;i++))
