@@ -398,7 +398,9 @@ do
 		ufw deny netbios-dgm
 		ufw deny netbios-ssn
 		ufw deny microsoft-ds
-		apt-get purge samba samba-common samba-common-bin -y -qq
+		apt-get purge samba -y -qq
+		apt-get purge samba-common -y -qq
+		apt-get purge samba-common-bin -y -qq
 		echo "[INFO] Samba has been removed from the system."	
 	elif [ ${services[${i}]} == "ftpY" ]
 	then
@@ -418,7 +420,8 @@ do
 		ufw deny saft
 		ufw deny ftps-data
 		ufw deny ftps
-		apt-get purge pure-ftpd vsftpd -y -qq
+		apt-get purge pure-ftpd -y -qq
+		apt-get purge vsftpd -y -qq
 		echo "[INFO] FTP has been removed from your system."
 	elif [ ${services[${i}]} == "sshY" ]
         then
@@ -515,7 +518,8 @@ do
         then
 		ufw deny http
 		ufw deny https
-		apt-get purge apache2 nginx -y -qq
+		apt-get purge apache2 -y -qq
+		apt-get purge nginx -y -qq
 		rm -r /var/www/*
 		echo "[INFO] Web services have been removed."
 	elif [ ${services[${i}]} == "dnsY" ]
@@ -557,7 +561,7 @@ echo "[INFO] The password policies for PAM have been set. RETRY: 3 MINLEN: 8 DIF
 
 # Bad Programs
 echo "[INFO] Removing bad programs..."
-badPrograms=("netcat" "netcat-openbsd" "netcat-traditional" "ncat" "pnetcat" "socat" "sock" "socket" "sbd" "john" "john-data" "hydra" "hydra-gtk" "aircrack-ng" "fcrackzip" "lcrack" "ophcrack" "ophcrack-cli" "pdfcrack" "pyrit" "rarcrack" "sipcrack" "irpas" "manaplus" "manaplus-data" "gameconqueror" "freeciv" "dsniff")
+badPrograms=("netcat" "netcat-openbsd" "netcat-traditional" "ncat" "pnetcat" "socat" "sock" "socket" "sbd" "john" "john-data" "hydra" "hydra-gtk" "aircrack-ng" "fcrackzip" "lcrack" "ophcrack" "ophcrack-cli" "pdfcrack" "pyrit" "rarcrack" "sipcrack" "irpas" "manaplus" "manaplus-data" "gameconqueror" "freeciv" "dsniff" "p0f")
 badSnaps=("obs-studio" "duckmarines")
 for badp in ${badPrograms[@]}; do
 	apt-get purge $badp -y -qq
@@ -573,7 +577,7 @@ echo "[INFO] Removal of bad programs complete."
 echo "[INFO] Reinstalling firefox..."
 apt-get purge firefox -y -qq
 apt-get install firefox -y -qq
-rm -rf /home/$mainUser/.mozilla/firefox/
+
 echo "[INFO] Installation complete."
 
 clear
@@ -606,8 +610,9 @@ echo "	- DNS server has been enabled/disabled"
 echo "-	[Phase 4] Finishing Phase" 
 echo "	- Media files have been listed in media-files.txt file and deleted (optional)."
 echo "	- PAM Password Policies have been set. RETRY: 3 MINLEN: 8 DIFOK: 3 REJECT_USER: Enabled MINCLASS: 3 MAXREPEAT: 2 DCREDIT: 1 UCREDIT: 1 LCREDIT: 1 OCREDI: 1"
-echo "	- Firefox has been reinstalled with default settings."
+echo "	- Firefox has been reinstalled."
 echo "	- Malicious Programs have been removed."
 echo "--------------------"
 echo "[INFO] Be sure to check for prohibited programs."
+echo "[INFO] Ensure that Firefox settings are good (certs enabled, popup blocker, etc.)."
 echo "[INFO] Thanks for running the script. Made by Josh K." 
