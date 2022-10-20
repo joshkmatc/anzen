@@ -12,7 +12,7 @@ mkdir -p /home/$mainUser/Desktop/.backups
 
 # Forensics Questions
 echo "[INFO] Gathering information for forensics questions..."
-find /home -name "*.midi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+find /home -name "*.midi" -type f > /home/$mainUser/Desktop/.backups/media-files.txt
 find /home -name "*.mid" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
 find /home -name "*.mod" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
 find /home -name "*.mp3" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
