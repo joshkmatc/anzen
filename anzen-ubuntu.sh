@@ -1,8 +1,19 @@
 #!/bin/bash
+# Colors
+endC="\e[0m"
+stan="\e["
+bold="\e[1;"
+und="\e[4;"
+red="91m"
+yel="93m"
+gre="92m"
+blu="94m"
+mag="95m"
+
 # Root check
 if [[ $EUID -ne 0 ]]
 then
-	echo "[ERR] Run this script as root. To do this, use the sudo command."
+	echo -e "${bold}${red}[ERR]${endC} ${stan}${red}Run this script as root. To do this, use the sudo command.${endC}"
 	exit
 fi
 
@@ -99,19 +110,18 @@ do
 	echo "Username: ${userList[${i}]} | ID: $(id ${userList[${i}]} | cut -d ' ' -f1)" >> /home/$mainUser/Desktop/.backups/users.txt
 done
 clear
-echo "    ___                         
-   /   |  ____  ____  ___  ____ 
-  / /| | / __ \\/_  / / _ \\/ __ \\
- / ___ |/ / / / / /_/  __/ / / /
-/_/  |_/_/ /_/ /___/\\___/_/ /_/ "
-echo ""
+echo -e "${bold}${yel}    ___                         
+   /   |  ____  ____  ${endC}${bold}${red}___  ____${endC} 
+${bold}${yel}  / /| | / __ \\/_  /${endC}${bold}${red} / _ \\/ __ \\ ${endC}
+${bold}${yel} / ___ |/ / / / / /${endC}${bold}${red}_/  __/ / / / ${endC}
+${bold}${yel}/_/  |_/_/ /_/ /__${endC}${bold}${red}_/\\___/_/ /_/ ${endC}"
 echo ""
 echo "[INFO] Welcome to Anzen Ubuntu, a script made for the CyberPatriot Competition. Made by Josh K."
 echo "-----------------------------------------------------------------------------------------------"
-echo "[INFO] Ensure you do the forensic questions BEFORE you start."
+echo -e "${bold}${yel}[WARN]${endC}${stan}${yel} Ensure you do the forensic questions BEFORE you start.${endC}"
 echo "[INFO] Media files and users are located in /home/$mainUser/Desktop/.backups"
-echo "[INFO] If a User ID is equal to 0 and it isn't the root user, modify the user's ID in the /etc/passwd file."
-echo "[INFO] Delete the user, then continue with the script."
+echo -e "${bold}${yel}[WARN]${endC}${stan}${yel} If a User ID is equal to 0 and it isn't the root user, modify the user's ID in the /etc/passwd file.${endC}"
+echo -e "${bold}${yel}[WARN]${endC}${stan}${yel} Delete the user, then continue with the script.${endC}"
 echo "-----------------------------------------------------------------------------------------------"
 echo ""
 echo "[INFO] Press Enter when you are ready to start."
@@ -123,7 +133,7 @@ uslen=${#users[@]}
 echo "### Existing User Changed Passwords ###" >> /home/$mainUser/Desktop/.backups/passwords.txt
 for (( i=0;i<$uslen;i++)) 
 do
-	echo "[Phase 1] User Management"
+	echo -e "${bold}${blu}[Phase 1]${endC} ${stan}${blu}User Management${endC}"
 	echo "[INFO] Ignore user ${users[${i}]}? (Do this if it is a system user) (y/n)"
         read ignoreusr
 	if [ $ignoreusr == n ] 
@@ -132,7 +142,7 @@ do
 		read deluser 
 		if [ $deluser == y ]
 		then
-			echo "[INFO] Are you sure? (y/n)"
+			echo "${bold}${yel}[WARN]${endC} ${stan}${yel}Are you sure? (y/n)${endC}"
 			read deluserconf
 			if [ $deluserconf == y ] 
 			then
@@ -194,7 +204,7 @@ done
 # New User Management
 echo "### New User Passwords" >> /home/$mainUser/Desktop/.backups/passwords.txt
 clear
-echo "[Phase 1] User Management"
+echo -e "${bold}${blu}[Phase 1]${endC}${stan}${blu} User Management${endC}"
 echo "[INFO] Type any new user account names below. Separate names using spaces."
 read -a newUsers
 
@@ -248,7 +258,7 @@ uslen=${#users[@]}
 
 # New Group Management
 clear
-echo "[Phase 1] User Management"
+echo -e "${bold}${blu}[Phase 1]${endC} ${stan}${blu}User Management${endC}"
 echo "[INFO] Type any new groups names below. Separate names using spaces."
 read -a newGroups
 
@@ -274,7 +284,7 @@ done
 
 # Basic Security Measures
 clear
-echo "[Phase 2] Basic Security"
+echo -e "${bold}${blu}[Phase 2]${endC} ${stan}${blu}Basic Security${endC}"
 echo "[INFO] Doing basic security..."
 # Locking root account
 usermod -L root
@@ -348,7 +358,7 @@ chmod 0640 /etc/shadow
 chmod 0644 /etc/passwd
 
 clear 
-echo "[Phase 3] Service Management"
+echo -e "${bold}${blu}[Phase 3]${endC} ${stan}${blu}Service Management${endC}"
 echo "[INFO] Type the name of critical services need out of this list along with a Y or N (case sensitive). Separate them by spaces."
 echo "[INFO] Example: sambaY ftpN sshY telnetY mailN"
 echo "[SEL] samba ftp ssh telnet mail print webserver dns"
@@ -374,6 +384,7 @@ do
 		for (( i=0;i<$uslen;i++)) 
 		do
 			clear
+			echo -e "${bold}${blu}[Phase 3]${endC} ${stan}${blu}Service Management${endC}"
 			echo "[INFO] Give ${users[${i}]} Samba permissions? (y/n)"
 			read sambaPerm
 			if [ $sambaPerm == y ] 
@@ -465,7 +476,10 @@ do
 		ufw deny telnet
 		ufw deny rtelnet
 		ufw deny telnets
-		apt-get purge telnet telnetd inetutils-telnetd telnetd-ssl -y -qq
+		apt-get purge telnet -y -qq
+		apt-get purge telnetd -y -qq 
+		apt-get purge inetutils-telnetd -y -qq
+		apt-get purge telnetd-ssl -y -qq
 		echo "[INFO] Telnet has been uninstalled."
 	elif [ ${services[${i}]} == "mailY" ]
 	then
@@ -484,6 +498,7 @@ do
 		ufw deny imap2
 		ufw deny imaps
 		ufw deny pop3s
+		apt-get purge opensmtpd -y -qq
 		echo "[INFO] Mail services have been blocked in the firewall."
 	elif [ ${services[${i}]} == "printY" ]
         then
@@ -561,7 +576,7 @@ echo "[INFO] The password policies for PAM have been set. RETRY: 3 MINLEN: 8 DIF
 
 # Bad Programs
 echo "[INFO] Removing bad programs..."
-badPrograms=("netcat" "netcat-openbsd" "netcat-traditional" "ncat" "pnetcat" "socat" "sock" "socket" "sbd" "john" "john-data" "hydra" "hydra-gtk" "aircrack-ng" "fcrackzip" "lcrack" "ophcrack" "ophcrack-cli" "pdfcrack" "pyrit" "rarcrack" "sipcrack" "irpas" "manaplus" "manaplus-data" "gameconqueror" "freeciv" "dsniff" "p0f")
+badPrograms=("netcat" "netcat-openbsd" "netcat-traditional" "ncat" "pnetcat" "socat" "sock" "socket" "sbd" "john" "john-data" "hydra" "hydra-gtk" "aircrack-ng" "fcrackzip" "lcrack" "ophcrack" "ophcrack-cli" "pdfcrack" "pyrit" "rarcrack" "sipcrack" "irpas" "manaplus" "manaplus-data" "gameconqueror" "freeciv" "dsniff" "p0f" "packit" "pompem")
 badSnaps=("obs-studio" "duckmarines")
 for badp in ${badPrograms[@]}; do
 	apt-get purge $badp -y -qq
@@ -572,12 +587,6 @@ done
 rm /usr/bin/nc
 rm /usr/bin/backdoor
 echo "[INFO] Removal of bad programs complete."
-
-# Reinstalling Firefox
-echo "[INFO] Reinstalling firefox..."
-apt-get purge firefox -y -qq
-apt-get install firefox -y -qq
-
 echo "[INFO] Installation complete."
 
 clear
@@ -610,7 +619,6 @@ echo "	- DNS server has been enabled/disabled"
 echo "-	[Phase 4] Finishing Phase" 
 echo "	- Media files have been listed in media-files.txt file and deleted (optional)."
 echo "	- PAM Password Policies have been set. RETRY: 3 MINLEN: 8 DIFOK: 3 REJECT_USER: Enabled MINCLASS: 3 MAXREPEAT: 2 DCREDIT: 1 UCREDIT: 1 LCREDIT: 1 OCREDI: 1"
-echo "	- Firefox has been reinstalled."
 echo "	- Malicious Programs have been removed."
 echo "--------------------"
 echo "[INFO] Be sure to check for prohibited programs."
