@@ -142,7 +142,7 @@ do
 		read deluser 
 		if [ $deluser == y ]
 		then
-			echo "${bold}${yel}[WARN]${endC} ${stan}${yel}Are you sure? (y/n)${endC}"
+			echo -e "${bold}${yel}[WARN]${endC} ${stan}${yel}Are you sure? (y/n)${endC}"
 			read deluserconf
 			if [ $deluserconf == y ] 
 			then
@@ -445,7 +445,7 @@ do
 		for (( i=0;i<$sshuserlen;i++))
 		do
 			clear
-			echo "[Phase 3] Service Management"
+			echo -e "${bold}${blu}[Phase 3]${endC}${stan}${blu} Service Management${endC}"
 			echo "[INFO] Give ${sshuserl[${i}]} SSH permission? (y/n)"
 			read sshUser
 			if [ $sshUser == y ]
@@ -551,13 +551,13 @@ done
 
 # Media Files
 clear
-echo "[Phase 4] Finishing Phase Removal"
+echo -e "${bold}${blu}[Phase 4]${endC}${stan}${blu} Finishing Phase Removal${endC}"
 readarray -t mediafiles < <(cat /home/$mainUser/Desktop/.backups/media-files.txt)
 mflength=${#mediafiles[@]}
 for (( i=0;i<$mflength;i++))
 do
 	clear
-	echo "[Phase 4] Finishing Phase"
+	echo -e "${bold}${blu}[Phase 4]${endC} ${stan}${blu}Finishing Phase${endC}"
 	echo "[INFO] Do you want to delete ${mediafiles[${i}]}? (y/n)"
 	rm -i "${mediafiles[${i}]}"
 done
@@ -590,8 +590,8 @@ echo "[INFO] Removal of bad programs complete."
 echo "[INFO] Installation complete."
 
 clear
-echo "[INFO] Script has completed."
-echo "[INFO] Files have been backed up to /home/$mainUser/Desktop/.backups"
+echo -e "[INFO] ${bold}${gre}Script has completed.${endC}"
+echo -e "[INFO] Files have been backed up to ${bold}${blu}/home/$mainUser/Desktop/.backups${endC}"
 echo "[INFO] Be sure to check this directory, as it contains passwords, backed up files, and more."
 echo "[INFO] This is what has been done on your system:"
 echo "--------------------"
