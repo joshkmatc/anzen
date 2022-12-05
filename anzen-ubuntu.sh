@@ -26,6 +26,7 @@ then
 	if [ $versioncheck == y ]
 	then
 	elif [ $versioncheck == n]
+	then
 		exit
 	else
        		exit	
