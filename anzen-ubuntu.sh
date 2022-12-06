@@ -162,11 +162,28 @@ read
 
 # User Management
 readarray -t users < <(getent passwd | cut -d: -f1 | sort)
+systemusers=("daemon" "bin" "sys" "games" "man" "lp" "mail" "news" "uucp" "proxy" "www-data" "backup" "list" "irc" "gnats" "nobody" "systemd-network" "systemd-resolve" "messagebus" "systemd-timesync" "syslog" "_apt" "tss" "uuidd" "systemd-oom" "tcpdump" "avahi-autoipd" "usbmux" "dnsmasq" "kernoops" "avahi" "cups-pk-helper" "rtkit" "whoopsie" "sssd" "speech-dispatcher" "nm-openvpn" "saned" "colord" "geoclue" "pulse" "gnome-initial-setup" "hplip" "gdm" "sshd" "fwupd-refresh")
 uslen=${#users[@]}
 echo "### Existing User Changed Passwords ###" >> /home/$mainUser/Desktop/.backups/passwords.txt
 for (( i=0;i<$uslen;i++)) 
 do
+	if [[ " ${systemusers[*]} " =~ " ${users[${i}]} " ]];
+	then
+		usermod -s /sbin/nologin ${users[${i}]}
+		continue
+	elif [[ " ${users[${i}]} " == "sync" ]];
+	then
+		continue
+	fi
 	echo -e "${bold}${blu}[Phase 1]${endC} ${stan}${blu}User Management${endC}"
+	rootcheck=$(id -u ${users[${i}]})
+	if [[ $rootcheck == 0 ]] && [[ "${users[${i}]}" != "root" ]];
+	then
+		echo -e "${bold}${red}[ERR]${endC}${stan}${red}Cannot manage user ${users[${i}]}. Their UID is 0. Please modify their UID in /etc/passwd, then manage them manually.${endC}"
+		echo "Press enter to continue."
+		read
+		continue
+	fi
 	echo "[INFO] Ignore user ${users[${i}]}? (Do this if it is a system user) (y/n)"
         read ignoreusr
 	if [ $ignoreusr == n ] 
@@ -356,9 +373,9 @@ echo "[INFO] Crontab has been backed up and disabled"
 
 # Passwords /etc/login.defs
 echo "[INFO] Changing login.defs file..."
-sed -i '/PASS_MAX_DAYS/c\PASS_MAX_DAYS     30' /etc/login.defs
-sed -i '/PASS_MIN_DAYS\c/PASS_MIN_DAYS	1' /etc/login.defs
-sed -i '/PASS_WARN_AGE\c/PASS_WARN_AGE	15' /etc/login.defs
+sed -i '165s/PASS_MAX_DAYS.*/PASS_MAX_DAYS	30/' /etc/login.defs
+sed -i '166s/PASS_MIN_DAYS.*/PASS_MIN_DAYS	1/' /etc/login.defs
+sed -i '167s/PASS_WARN_AGE.*/PASS_WARN_AGE	7/' /etc/login.defs
 echo "[INFO] login.defs file has been changed. MAX: 30 MIN: 1 WARN: 7"
 
 # Fixing APT sources
@@ -376,9 +393,8 @@ apt-get upgrade -y -qq
 echo "[INFO] Updates have been complete."
 
 # Auto updates
-echo "[INFO] Turning auto upgrades on..." 
-cp /etc/apt/apt.conf.d/20auto-upgrades /home/$mainUser/Desktop/.backups/
-echo -e 'APT::Periodic::Update-Package-Lists "1";\nAPT::Periodic::Download-Upgradeable-Packages "0";\nAPT::Periodic::AutocleanInterval "0";\nAPT::Periodic::Unattended-Upgrade "1";' > /etc/apt/apt.conf.d/20auto-upgrades
+zenity --info --text="Software &amp; Updates will now open.\nNavigate to the Updates tab, then change the settings to:\n\n<b>Subscribed to:</b> All updates\n<b>Automatically check for updates:</b> Daily\n<b>When there are security updates:</b> Download and install automatically\n<b>When there are other updates:</b> Display immediately\n<b>Notify me of a new Ubuntu version:</b> For long-term support versions\n\nWhen you have changed these settings, click Close, then click Reload on the popup asking to refresh the cache." &
+software-properties-gtk
 echo "[INFO] Auto upgrades have been enabled."
 
 echo "[INFO] Fixing sudoers file..."
