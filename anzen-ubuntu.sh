@@ -21,27 +21,24 @@ fi
 VER=$(lsb_release -cs)
 if [ $VER == "bionic" ]
 then
-	echo "${stan}${yel}[WARN] Ubuntu 18.04 Bionic is not supported with this script. Things may not work as expected. Continue anyways? (y/N)${endC}"
+	echo -e "${stan}${yel}[WARN] Ubuntu 18.04 Bionic is not supported with this script. Things may not work as expected. Continue anyways? (y/N)${endC}"
 	read versioncheck
-	if [ $versioncheck == y ]
+	if [ $versioncheck == "y" ]
 	then
-	elif [ $versioncheck == n]
-	then
-		exit
+		echo ""
 	else
        		exit	
 	fi
 elif [ $VER == "xenial" ]
 then
-	echo "${stan}${red}[ERR] Ubuntu 16.04 Xenial is not supported with this script. Upgrade to a newer version of Ubuntu to use this script.${endC}"
+	echo -e "${stan}${red}[ERR] Ubuntu 16.04 Xenial is not supported with this script. Upgrade to a newer version of Ubuntu to use this script.${endC}"
 	exit
 else
-	echo "${stan}${yel}[WARN] Release $VER is not supported with this script. Things may not work as expected. Continue anyways? (y/N)${endC}"
+	echo -e "${stan}${yel}[WARN] Release $VER is not supported with this script. Things may not work as expected. Continue anyways? (y/N)${endC}"
 	read versioncheck
-	if [ $versioncheck == y ]
+	if [ $versioncheck == "y" ]
 	then
-	elif [ $versioncheck == n]
-		exit
+		echo ""
 	else
        		exit	
 	fi
@@ -615,7 +612,7 @@ fi
 
 # Bad Programs
 echo "[INFO] Removing bad programs..."
-badPrograms=("netcat" "netcat-openbsd" "netcat-traditional" "ncat" "pnetcat" "socat" "sock" "socket" "sbd" "john" "john-data" "hydra" "hydra-gtk" "aircrack-ng" "fcrackzip" "lcrack" "ophcrack" "ophcrack-cli" "pdfcrack" "pyrit" "rarcrack" "sipcrack" "irpas" "manaplus" "manaplus-data" "gameconqueror" "freeciv" "dsniff" "p0f" "packit" "pompem")
+badPrograms=("netcat" "netcat-openbsd" "netcat-traditional" "ncat" "pnetcat" "socat" "sock" "socket" "sbd" "john" "john-data" "hydra" "hydra-gtk" "aircrack-ng" "fcrackzip" "lcrack" "ophcrack" "ophcrack-cli" "pdfcrack" "pyrit" "rarcrack" "sipcrack" "irpas" "manaplus" "manaplus-data" "gameconqueror" "freeciv" "dsniff" "p0f" "packit" "pompem" "doona" "proxychains" "xprobe")
 badSnaps=("obs-studio" "duckmarines")
 for badp in ${badPrograms[@]}; do
 	apt-get purge $badp -y -qq
