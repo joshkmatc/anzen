@@ -162,7 +162,7 @@ read
 
 # User Management
 readarray -t users < <(getent passwd | cut -d: -f1 | sort)
-systemusers=("daemon" "bin" "sys" "games" "man" "lp" "mail" "news" "uucp" "proxy" "www-data" "backup" "list" "irc" "gnats" "nobody" "systemd-network" "systemd-resolve" "messagebus" "systemd-timesync" "syslog" "_apt" "tss" "uuidd" "systemd-oom" "tcpdump" "avahi-autoipd" "usbmux" "dnsmasq" "kernoops" "avahi" "cups-pk-helper" "rtkit" "whoopsie" "sssd" "speech-dispatcher" "nm-openvpn" "saned" "colord" "geoclue" "pulse" "gnome-initial-setup" "hplip" "gdm" "sshd" "fwupd-refresh")
+systemusers=("daemon" "bin" "sys" "games" "man" "lp" "mail" "news" "uucp" "proxy" "www-data" "backup" "list" "irc" "gnats" "nobody" "systemd-network" "systemd-resolve" "messagebus" "systemd-timesync" "syslog" "_apt" "tss" "uuidd" "systemd-oom" "tcpdump" "avahi-autoipd" "usbmux" "dnsmasq" "kernoops" "avahi" "cups-pk-helper" "rtkit" "whoopsie" "sssd" "speech-dispatcher" "nm-openvpn" "saned" "colord" "geoclue" "pulse" "gnome-initial-setup" "hplip" "gdm" "sshd" "fwupd-refresh" "systemd-coredump")
 uslen=${#users[@]}
 echo "### Existing User Changed Passwords ###" >> /home/$mainUser/Desktop/.backups/passwords.txt
 for (( i=0;i<$uslen;i++)) 
@@ -170,9 +170,11 @@ do
 	if [[ " ${systemusers[*]} " =~ " ${users[${i}]} " ]];
 	then
 		usermod -s /sbin/nologin ${users[${i}]}
+		clear
 		continue
-	elif [[ " ${users[${i}]} " == "sync" ]];
+	elif [[ "${users[${i}]}" == "sync" ]] || [[ "${users[${i}]}" == "root"]];
 	then
+		clear
 		continue
 	fi
 	echo -e "${bold}${blu}[Phase 1]${endC} ${stan}${blu}User Management${endC}"
