@@ -172,7 +172,11 @@ do
 		usermod -s /sbin/nologin ${users[${i}]}
 		clear
 		continue
-	elif [[ "${users[${i}]}" == "sync" ]] || [[ "${users[${i}]}" == "root"]];
+	elif [[ "${users[${i}]}" == "sync" ]];
+	then
+		clear
+		continue
+	elif [[ "${users[${i}]}" == "root" ]];
 	then
 		clear
 		continue
