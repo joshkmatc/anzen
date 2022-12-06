@@ -33,6 +33,12 @@ elif [ $VER == "xenial" ]
 then
 	echo -e "${stan}${red}[ERR] Ubuntu 16.04 Xenial is not supported with this script. Upgrade to a newer version of Ubuntu to use this script.${endC}"
 	exit
+elif [ $VER == "focal" ]
+then
+	echo ""
+elif [ $VER == "jammy" ]
+then
+	echo ""
 else
 	echo -e "${stan}${yel}[WARN] Release $VER is not supported with this script. Things may not work as expected. Continue anyways? (y/N)${endC}"
 	read versioncheck
