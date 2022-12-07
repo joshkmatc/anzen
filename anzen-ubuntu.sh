@@ -384,6 +384,33 @@ sed -i '166s/PASS_MIN_DAYS.*/PASS_MIN_DAYS	1/' /etc/login.defs
 sed -i '167s/PASS_WARN_AGE.*/PASS_WARN_AGE	7/' /etc/login.defs
 echo "[INFO] login.defs file has been changed. MAX: 30 MIN: 1 WARN: 7"
 
+# Disabling ICMP in UFW
+echo "[INFO] Disabling ICMP in UFW..."
+sed -i '34s/-A.*/#-A ufw-before-input -p icmp --icmp-type destination-unreachable -j ACCEPT/' /etc/ufw/before.rules
+sed -i '35s/-A.*/#-A ufw-before-input -p icmp --icmp-type time-exceeded -j ACCEPT/' /etc/ufw/before.rules
+sed -i '36s/-A.*/#-A ufw-before-input -p icmp --icmp-type parameter-problem -j ACCEPT/' /etc/ufw/before.rules
+sed -i '37s/-A.*/#-A ufw-before-input -p icmp --icmp-type echo-request -j ACCEPT/' /etc/ufw/before.rules
+sed -i '40s/-A.*/#-A ufw-before-forward -p icmp --icmp-type destination-unreachable -j ACCEPT/' /etc/ufw/before.rules
+sed -i '41s/-A.*/#-A ufw-before-forward -p icmp --icmp-type time-exceeded -j ACCEPT/' /etc/ufw/before.rules
+sed -i '42s/-A.*/#-A ufw-before-forward -p icmp --icmp-type parameter-problem -j ACCEPT/' /etc/ufw/before.rules
+sed -i '43s/-A.*/#-A ufw-before-forward -p icmp --icmp-type echo-request -j ACCEPT/' /etc/ufw/before.rules
+ufw reload
+echo "[INFO] ICMP disabled in UFW"
+
+# Preventing Standard Users from using dmesg
+echo "[INFO] Disabling dmesg for standard users..."
+echo 'kernel.dmesg_restrict=1' | tee -a /etc/sysctl.conf
+echo "[INFO] Disabled dmesg for standard users."
+
+echo "[INFO] Disabling ICMP redirects from kernel..."
+touch /etc/sysctl.d/96-disable-icmpv4.conf
+echo 'net.ipv4.conf.all.accept_redirects=0' | tee -a /etc/sysctl.d/96-disable-icmpv4.conf
+echo 'net.ipv4.conf.eth0.accept_redirects=0' | tee -a /etc/sysctl.d/96-disable-icmpv4.conf
+echo 'net.ipv4.conf.eth1.accept_redirects=0' | tee -a /etc/sysctl.d/96-disable-icmpv4.conf
+echo 'net.ipv6.conf.eth0.accept_redirects=0' | tee -a /etc/sysctl.d/96-disable-icmpv4.conf
+echo 'net.ipv6.conf.eth1.accept_redirects=0' | tee -a /etc/sysctl.d/96-disable-icmpv4.conf
+echo "[INFO] Disabled ICMP redirects from kernel."
+
 # Fixing APT sources
 echo "[INFO] Fixing and Updating your APT sources..."
 cp /etc/apt/sources.list /home/$mainUser/Desktop/.backups/
