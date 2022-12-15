@@ -10,13 +10,6 @@ gre="92m"
 blu="94m"
 mag="95m"
 
-# Root check
-if [[ $EUID -ne 0 ]]
-then
-	pkexec "$0" "$@"
-	exit
-fi
-
 # Version Check
 VER=$(lsb_release -cs)
 if [ $VER == "bionic" ]
@@ -47,12 +40,21 @@ else
 	fi
 fi
 
-mainUser=${SUDO_USER:-${USER}}
+# Root check
+if [[ $EUID -ne 0 ]]
+then
+	pkexec "$0" "$@"
+	exit
+fi
+
+
+
+mainUser=$(getent passwd $PKEXEC_UID | cut -d: -f1)
 # Backup directory
 mkdir -p /home/$mainUser/Desktop/.backups
 
 # Forensics Questions
-FORPROGRESS=$(zenity --progress --title="Anzen" --text="Gathering media files...")
+(
 echo "[INFO] Gathering information for forensics questions..."
 find /home -name "*.midi" -type f > /home/$mainUser/Desktop/.backups/media-files.txt
 find /home -name "*.mid" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
@@ -79,6 +81,7 @@ find /home -name "*.movi" -type f >> /home/$mainUser/Desktop/.backups/media-file
 find /home -name "*.mv" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
 find /home -name "*.iff" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
 find /home -name "*.anim5" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+echo "25" ; 
 find /home -name "*.anim3" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
 find /home -name "*.anim7" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
 find /home -name "*.avi" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
@@ -104,6 +107,7 @@ find /home -name "*.asf" -type f >> /home/$mainUser/Desktop/.backups/media-files
 find /home -name "*.asx" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
 find /home -name "*.wma" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
 find /home -name "*.wax" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+echo "50" ; 
 find /home -name "*.wmv" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
 find /home -name "*.wmx" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
 find /home -name "*.3gp" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
@@ -119,6 +123,7 @@ find /home -name "*.rs" -type f >> /home/$mainUser/Desktop/.backups/media-files.
 find /home -name "*.im1" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
 find /home -name "*.gif" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
 find /home -name "*.jpeg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
+echo "70" ; 
 find /home -name "*.jpg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
 find /home -name "*.jpe" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
 find /home -name "*.png" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
@@ -132,18 +137,25 @@ find /home -name "*.pcx" -type f >> /home/$mainUser/Desktop/.backups/media-files
 find /home -name "*.ico" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
 find /home -name "*.svg" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
 find /home -name "*.svgz" -type f >> /home/$mainUser/Desktop/.backups/media-files.txt
-echo "50" | $FORPROGRESS
 echo "[INFO] Found media files. Listing users..."
+echo "100" ; 
+) | sudo -u ${mainUser} --preserve-env=DISPLAY,XDG_RUNTIME_DIR \
+	zenity --progress --display=:0 --no-cancel --auto-close --title="Anzen - Forensics Questions" --text="Gathering media files..." --percentage 0
+echo "## USERS ##" > /home/$mainUser/Desktop/.backups/users.txt
 readarray -t userList < <(getent passwd | cut -d: -f1 | sort)
 userlen=${#userList[@]}
-echo "## USERS ##" > /home/$mainUser/Desktop/.backups/users.txt
+(
 for ((i=0;i<$userlen;i++))
 do
+	percdec=$(printf %.2f "$((10**3 * (${i} + 1)/${userlen}))e-3")
+	percent=$(echo "${percdec} * 100" | bc)
+	echo "${percent}"
 	echo "Username: ${userList[${i}]} | ID: $(id ${userList[${i}]} | cut -d ' ' -f1)" >> /home/$mainUser/Desktop/.backups/users.txt
 done
+) | sudo -u ${mainUser} --preserve-env=DISPLAY,XDG_RUNTIME_DIR \
+        zenity --progress --display=:0 --no-cancel --auto-close --title="Anzen - Forensics Questions" --text="Gathering users..." --percentage 0
 
-	read
-clear
+# clear
 echo -e "${bold}${yel}    ___                         
    /   |  ____  ____  ${endC}${bold}${red}___  ____${endC} 
 ${bold}${yel}  / /| | / __ \\/_  /${endC}${bold}${red} / _ \\/ __ \\ ${endC}
@@ -151,7 +163,7 @@ ${bold}${yel} / ___ |/ / / / / /${endC}${bold}${red}_/  __/ / / / ${endC}
 ${bold}${yel}/_/  |_/_/ /_/ /__${endC}${bold}${red}_/\\___/_/ /_/ ${endC}"
 echo ""
 echo "[INFO] Welcome to Anzen Ubuntu, a script made for the CyberPatriot Competition. Made by Josh K."
-echo -e "${bold}${yel}[WARN]${endC}${stan}${yel}This is a beta version of the script. Do not expect it to work fully.${endC}"
+echo -e "${bold}${yel}[WARN]${endC}${stan}${yel} This is a beta version of the script. Do not expect it to work fully.${endC}"
 echo "-----------------------------------------------------------------------------------------------"
 echo -e "${bold}${yel}[WARN]${endC}${stan}${yel} Ensure you do the forensic questions BEFORE you start.${endC}"
 echo "[INFO] Media files and users are located in /home/$mainUser/Desktop/.backups"
@@ -187,22 +199,18 @@ do
 	rootcheck=$(id -u ${users[${i}]})
 	if [[ $rootcheck == 0 ]] && [[ "${users[${i}]}" != "root" ]];
 	then
-		echo -e "${bold}${red}[ERR]${endC}${stan}${red}Cannot manage user ${users[${i}]}. Their UID is 0. Please modify their UID in /etc/passwd, then manage them manually.${endC}"
-		echo "Press enter to continue."
-		read
+		sudo -u ${mainUser} --preserve-env=DISPLAY,XDG_RUNTIME_DIR \
+        zenity --error --text="Cannot manage <b>${users[${i}]}</b>. Their UID is 0. This means that their user is acting as the root user.\n\nPlease modify their UID manually in this file:\n<b>/etc/passwd</b>\n\nYou will have to manually delete this user.\n\nPress OK when you are ready to continue."
 		continue
 	fi
-	echo "[INFO] Ignore user ${users[${i}]}? (Do this if it is a system user) (y/n)"
-        read ignoreusr
-	if [ $ignoreusr == n ] 
+	sudo -u "${mainUser}" --preserve-env=DISPLAY,XDG_RUNIME_DIR echo "DISPLAY IS :$DISPLAY"
+	sudo -u "${mainUser}" --preserve-env=DISPLAY,XDG_RUNTIME_DIR zenity --question --text="Do you want to modify <b>${users[${i}]}</b>?\n\n<b>Note</b>: Ignore this user if it is a system user.\n\nPress Yes to modify, otherwise press no." --default-cancel --ellipsize
+	read
+	if sudo -u ${mainUser} --preserve-env=DISPLAY,XDG_RUNTIME_DIR zenity --question --text="Do you want to modify <b>${users[${i}]}</b>?\n\n<b>Note</b>: Ignore this user if it is a system user.\n\nPress Yes to modify, otherwise press no." --default-cancel --ellipsize; 
 	then	
-		echo "[INFO] Delete user ${users[${i}]}? (y/n)"
-		read deluser 
-		if [ $deluser == y ]
+		if sudo -u ${mainUser} --preserve-env=DISPLAY,XDG_RUNTIME_DIR zenity --question --text="Do you want to delete <b>${users[${i}]}</b>\n\nPress Yes to delete, otherwise press no." --default-cancel --ellipsize --icon-name=warning;
 		then
-			echo -e "${bold}${yel}[WARN]${endC} ${stan}${yel}Are you sure? (y/n)${endC}"
-			read deluserconf
-			if [ $deluserconf == y ] 
+			if sudo -u ${mainUser} --preserve-env=DISPLAY,XDG_RUNTIME_DIR zenity --question --text="<b>Are you sure</b> you want to delete <b>${users[${i}]}</b>?\n\nPress Yes to confirm deletion, otherwise press no." --default-cancel --ellipsize --icon-name=warning; 
 			then
 				userdel -r ${users[${i}]}
 				echo "[INFO] User ${users[${i}]} has been deleted"
